@@ -63,23 +63,30 @@ class LoginViewController: UIViewController {
             showAlert(message: "아이디와 비밀번호를 모두 입력해주세요.")
             return
         }
-        
-        let docRef = Firestore.firestore().collection("users").document(id)
-        docRef.getDocument { snapshot, error in
+        let usersRef = Firestore.firestore().collection("users")
+        usersRef.whereField("id", isEqualTo: id).getDocuments { snapshot, error in
             if let error = error {
                 print("로그인 조회 실패: \(error.localizedDescription)")
                 self.showAlert(message: "로그인 중 문제가 발생했습니다.")
                 return
             }
-            
-            guard let data = snapshot?.data() else {
-                self.showAlert(message: "해당 이메일의 계정이 없습니다.")
+
+            guard let documents = snapshot?.documents, let userDoc = documents.first else {
+                self.showAlert(message: "해당 아이디의 계정이 존재하지 않습니다.")
                 return
             }
-            
+
+            let data = userDoc.data()
             let savedPassword = data["password"] as? String ?? ""
+
             if savedPassword == password {
-                print("로그인 성공! 사용자 이름: \(data["name"] ?? "")")
+                print("로그인 성공 - 사용자 이름: \(data["name"] ?? "")")
+                let storyboard = UIStoryboard(name: "Main", bundle: nil)
+                if let mainVC = storyboard.instantiateViewController(withIdentifier: "MainViewController") as? MainViewController {
+                    mainVC.userDocumentId = userDoc.documentID
+                    mainVC.modalPresentationStyle = .fullScreen
+                    self.present(mainVC, animated: true)
+                }
                 self.navigateToMain()
             } else {
                 self.showAlert(message: "비밀번호가 일치하지 않습니다.")
