@@ -11,13 +11,114 @@ class PayViewController: UIViewController {
     @IBOutlet weak var incomeTypeLabel: UILabel!
 
     @IBOutlet weak var payButton: UIButton!
-    @IBOutlet weak var charge3: UILabel! //기본요금
-    @IBOutlet weak var charge2: UILabel! //정부지원 판정금
-    @IBOutlet weak var charge1: UILabel! //본인 부담금
+    @IBOutlet weak var charge3: UILabel! // 기본요금
+    @IBOutlet weak var charge2: UILabel! // 정부지원 판정금
+    @IBOutlet weak var charge1: UILabel! // 본인 부담금
+
+    // 오버레이 구성 요소
+    let overlayView = UIView()
+    let loadingIcon = UIImageView(image: UIImage(systemName: "hourglass"))
+    let loadingLabel = UILabel()
+    let subLabel = UILabel()
+    let logo1 = UIImageView(image: UIImage(named:"service_logo"))
+    let logo2 = UIImageView(image: UIImage(named:"ivory_text_logo"))
+    let xIcon = UIImageView(image: UIImage(systemName: "xmark"))
+    let textLabel = UILabel()
+
     override func viewDidLoad() {
         super.viewDidLoad()
         fetchUserAndChildInfo()
+        setupOverlay()
         payButton.layer.cornerRadius = 12
+    }
+
+    private func setupOverlay() {
+        overlayView.frame = view.bounds
+        overlayView.backgroundColor = .white
+        overlayView.isHidden = true
+        overlayView.layer.zPosition = 999
+
+        // 중앙 로딩 아이콘 및 라벨
+        loadingIcon.tintColor = UIColor(red: 0.988, green: 0.596, blue: 0.424, alpha: 1)
+        loadingIcon.contentMode = .scaleAspectFit
+        loadingIcon.translatesAutoresizingMaskIntoConstraints = false
+
+        loadingLabel.text = "서비스 결제 중"
+        loadingLabel.font = UIFont.boldSystemFont(ofSize: 22)
+        loadingLabel.textAlignment = .center
+        loadingLabel.textColor = .black
+        loadingLabel.translatesAutoresizingMaskIntoConstraints = false
+
+        subLabel.text = "잠시만 기다려주세요 :)"
+        subLabel.font = UIFont.systemFont(ofSize: 15)
+        subLabel.textAlignment = .center
+        subLabel.textColor = .darkGray
+        subLabel.translatesAutoresizingMaskIntoConstraints = false
+
+        // 하단 로고 및 텍스트
+        logo1.image = UIImage(named: "아이돌봄서비스 로고")
+        logo1.contentMode = .scaleAspectFit
+        logo1.translatesAutoresizingMaskIntoConstraints = false
+
+        logo2.image = UIImage(named: "아이보리 텍스트 로고")
+        logo2.contentMode = .scaleAspectFit
+        logo2.translatesAutoresizingMaskIntoConstraints = false
+
+        textLabel.text = "본 서비스는 아이돌봄서비스와 아이보리가 함께합니다"
+        textLabel.font = UIFont.systemFont(ofSize: 12)
+        textLabel.textColor = UIColor(red: 0.6, green: 0.6, blue: 0.6, alpha: 1)
+        textLabel.textAlignment = .center
+        textLabel.translatesAutoresizingMaskIntoConstraints = false
+
+        // 스택 구성
+        let centerStack = UIStackView(arrangedSubviews: [loadingIcon, loadingLabel, subLabel])
+        centerStack.axis = .vertical
+        centerStack.alignment = .center
+        centerStack.spacing = 12
+        centerStack.translatesAutoresizingMaskIntoConstraints = false
+
+        let logoStack = UIStackView(arrangedSubviews: [logo1, logo2])
+        logoStack.axis = .horizontal
+        logoStack.alignment = .center
+        logoStack.distribution = .equalSpacing
+        logoStack.spacing = 8
+        logoStack.translatesAutoresizingMaskIntoConstraints = false
+
+        overlayView.addSubview(centerStack)
+        overlayView.addSubview(logoStack)
+        overlayView.addSubview(textLabel)
+        view.addSubview(overlayView)
+
+        // 제약조건
+        NSLayoutConstraint.activate([
+            // 중앙 스택
+            centerStack.centerXAnchor.constraint(equalTo: overlayView.centerXAnchor),
+            centerStack.centerYAnchor.constraint(equalTo: overlayView.centerYAnchor),
+            loadingIcon.widthAnchor.constraint(equalToConstant: 30),
+            loadingIcon.heightAnchor.constraint(equalToConstant: 30),
+
+            // 로고 스택 하단
+            logoStack.centerXAnchor.constraint(equalTo: overlayView.centerXAnchor),
+            logoStack.bottomAnchor.constraint(equalTo: overlayView.bottomAnchor, constant: -60),
+            logo1.heightAnchor.constraint(equalToConstant: 20),
+            logo2.heightAnchor.constraint(equalToConstant: 20),
+
+            // 안내 텍스트
+            textLabel.topAnchor.constraint(equalTo: logoStack.bottomAnchor, constant: 6),
+            textLabel.centerXAnchor.constraint(equalTo: overlayView.centerXAnchor)
+        ])
+    }
+
+
+    @IBAction func payButtonTapped(_ sender: UIButton) {
+        overlayView.isHidden = false
+
+        // 실제 결제 로직으로 대체 가능
+        DispatchQueue.main.asyncAfter(deadline: .now() + 2.0) {
+            self.overlayView.isHidden = true
+            print("결제 완료 처리")
+            // 결제 완료 후 화면 전환 등 추가 작업
+        }
     }
 
     private func fetchUserAndChildInfo() {
@@ -68,7 +169,6 @@ class PayViewController: UIViewController {
                     .order(by: "createdAt", descending: true)
                     .limit(to: 1)
                     .getDocuments { scheduleSnapshot, error in
-
                         if let error = error {
                             print("스케줄 정보 조회 실패: \(error.localizedDescription)")
                             return
@@ -88,7 +188,7 @@ class PayViewController: UIViewController {
                             return
                         }
 
-                        //5시간 고정
+                        // 5시간 고정 스케줄
                         let endDate = Calendar.current.date(byAdding: .hour, value: 5, to: startDate) ?? startDate
 
                         let formatterDate = DateFormatter()
@@ -99,20 +199,20 @@ class PayViewController: UIViewController {
 
                         let scheduleText = "\(formatterDate.string(from: startDate)) | \(formatterTime.string(from: startDate)) ~ \(formatterDate.string(from: endDate)) | \(formatterTime.string(from: endDate))"
 
-                        //요금 계산
+                        // 요금 계산
                         let hoursPerDay = 5
                         let hourlyRate = 13900
                         let days = 5
                         let totalHours = hoursPerDay * days
                         let totalAmount = totalHours * hourlyRate
 
-                        //자녀 나이 계산
+                        // 자녀 나이 계산
                         let birthFormatter = DateFormatter()
                         birthFormatter.dateFormat = "yyyy-MM-dd"
                         let birthDate = birthFormatter.date(from: birthStr) ?? Date()
                         let age = Calendar.current.dateComponents([.year], from: birthDate, to: Date()).year ?? 0
 
-                        //정부 지원금 계산
+                        // 정부 지원금 계산
                         var subsidy: Int = 0
                         if incomeType.contains("가형") {
                             subsidy = age < 8 ? Int(Double(totalAmount) * 0.85) : Int(Double(totalAmount) * 0.75)
@@ -121,12 +221,11 @@ class PayViewController: UIViewController {
                         } else if incomeType.contains("다형") || incomeType.contains("라형") {
                             subsidy = Int(Double(totalAmount) * 0.50)
                         } else {
-                            subsidy = 0 // 소득 유형이 없으면 지원 없음
+                            subsidy = 0
                         }
 
                         let userPay = totalAmount - subsidy
 
-                        
                         DispatchQueue.main.async {
                             self.scheduleLabel.text = scheduleText
                             self.memoLabel.text = memo
@@ -142,5 +241,4 @@ class PayViewController: UIViewController {
             }
         }
     }
-
 }
