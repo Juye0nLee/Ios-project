@@ -7,8 +7,11 @@
 
 import Foundation
 import UIKit
+import FirebaseFirestore
 
 class ApplyViewController: UIViewController, UIImagePickerControllerDelegate, UINavigationControllerDelegate {
+    @IBOutlet weak var childInfoLabel: UILabel!
+    @IBOutlet weak var childNameLabel: UILabel!
     @IBOutlet weak var imagePickerView: UIView!
     @IBOutlet weak var childBox: UIView!
     @IBOutlet weak var text2: UILabel!
@@ -27,12 +30,22 @@ class ApplyViewController: UIViewController, UIImagePickerControllerDelegate, UI
     @IBOutlet weak var ImagePreview: UIImageView!
     @IBOutlet weak var resultView: UIView!
     @IBOutlet weak var calendar: UIDatePicker!
+    
+    @IBOutlet weak var periodField: UILabel!
+    @IBOutlet weak var period: UILabel!
+    @IBOutlet weak var reasonField: UILabel!
+    @IBOutlet weak var reason: UILabel!
+    @IBOutlet weak var noteField: UILabel!
+    @IBOutlet weak var note: UILabel!
+    @IBOutlet weak var memoView: UIStackView!
+    @IBOutlet weak var memofield: UITextField!
+    var userDocumentId: String?
     var selectedDate = ""
     let overlayView = UIView()
     let loadingLabel = UILabel()
     let loadingIcon = UIImageView(image: UIImage(systemName: "list.bullet.rectangle"))
 
-    var count = 6;
+    var count = 1;
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -51,10 +64,17 @@ class ApplyViewController: UIViewController, UIImagePickerControllerDelegate, UI
         imagePickerView.isHidden = true
         resultView.isHidden = true
         calendar.isHidden = true
+        memoView.isHidden = true
+        
+        
+        memofield.addTarget(self, action: #selector(memoFieldDidBeginEditing), for: .editingDidBegin)
+        memofield.layer.cornerRadius = 12
         
         calendar.preferredDatePickerStyle = .inline // 달력 스타일
         calendar.datePickerMode = .dateAndTime
         calendar.addTarget(self, action: #selector(dateChanged(_:)), for: .valueChanged)
+        
+        
 
 
         //탭 제스처 설정
@@ -151,6 +171,73 @@ class ApplyViewController: UIViewController, UIImagePickerControllerDelegate, UI
         print("선택된 날짜 및 시간: \(selectedDate)")
         count += 1
     }
+    
+    private func calculateAge(from birth: String) -> Int {
+        let formatter = DateFormatter()
+        formatter.dateFormat = "yyyy-MM-dd" // 저장한 형식과 일치해야 함
+        guard let birthDate = formatter.date(from: birth) else { return 0 }
+
+        let calendar = Calendar.current
+        let now = Date()
+        let ageComponents = calendar.dateComponents([.year], from: birthDate, to: now)
+        return ageComponents.year ?? 0
+    }
+    
+    @objc func memoFieldDidBeginEditing() {
+        memofield.backgroundColor = UIColor(red: 0.954, green: 0.954, blue: 0.954, alpha: 1)
+        memofield.layer.cornerRadius = 12
+        memofield.layer.borderWidth = 1
+        memofield.layer.borderColor = UIColor(red: 0.988, green: 0.596, blue: 0.424, alpha: 1).cgColor
+        checkButton.backgroundColor = UIColor(red: 0.988, green: 0.596, blue: 0.424, alpha: 1)
+    }
+    
+    private func saveScheduleForChild(date: String, memo: String) {
+        guard let userId = userDocumentId else {
+            print("userDocumentId 없음")
+            return
+        }
+
+        // 자녀 문서 1개만 있다고 가정 (첫 번째 자녀)
+        let childrenRef = Firestore.firestore()
+            .collection("users")
+            .document(userId)
+            .collection("children")
+
+        childrenRef.getDocuments { snapshot, error in
+            if let error = error {
+                print("자녀 문서 조회 실패: \(error.localizedDescription)")
+                return
+            }
+
+            guard let firstChildDoc = snapshot?.documents.first else {
+                print("자녀 없음")
+                return
+            }
+
+            let childId = firstChildDoc.documentID
+            let scheduleData: [String: Any] = [
+                "date": date,
+                "memo": memo,
+                "createdAt": Timestamp(date: Date())
+            ]
+
+            Firestore.firestore()
+                .collection("users")
+                .document(userId)
+                .collection("children")
+                .document(childId)
+                .collection("schedules")
+                .addDocument(data: scheduleData) { error in
+                    if let error = error {
+                        print("스케줄 저장 실패: \(error.localizedDescription)")
+                    } else {
+                        print("스케줄 저장 성공!")
+                    }
+                }
+        }
+    }
+
+
     //버튼 클릭 이벤트
     @IBAction func checkButtonTapped(_ sender: UIButton) {
         let shouldHide = true
@@ -166,6 +253,34 @@ class ApplyViewController: UIViewController, UIImagePickerControllerDelegate, UI
             checkButton.backgroundColor = UIColor(red: 0.875, green: 0.886, blue: 0.898, alpha: 1)
             childBox.isHidden = false
             count += 1
+            //자녀 정보 가져오기
+            if let userId = userDocumentId {
+                Firestore.firestore()
+                    .collection("users")
+                    .document(userId)
+                    .collection("children")
+                    .getDocuments { snapshot, error in
+                        if let error = error {
+                            print("자녀 정보 조회 실패: \(error.localizedDescription)")
+                            return
+                        }
+                        guard let documents = snapshot?.documents else { return }
+                        if let first = documents.first {
+                            let data = first.data()
+                            let name = data["name"] as? String ?? ""
+                            let birth = data["birth"] as? String ?? ""
+                            let gender = data["gender"] as? String ?? ""
+                            
+                            let age = self.calculateAge(from: birth)
+
+                            DispatchQueue.main.async {
+                                self.childNameLabel.text = "\(name)"
+                                self.childInfoLabel.text = "만 \(age)세 | \(gender)"
+                                self.childBox.isHidden = false
+                            }
+                        }
+                    }
+            }
         } else if count == 2 {
             text1.text = "1. 서류제출"
             text2.text = "진단서 제출"
@@ -204,7 +319,6 @@ class ApplyViewController: UIViewController, UIImagePickerControllerDelegate, UI
             count += 1
         } else if count == 5 {
             overlayView.isHidden = false
-            // 예: 2초 뒤에 숨기기 (서버 응답 시 대체 가능)
             DispatchQueue.main.asyncAfter(deadline: .now() + 4.0) {
                 self.overlayView.isHidden = true
                 self.imagePickerView.isHidden = true
@@ -213,6 +327,12 @@ class ApplyViewController: UIViewController, UIImagePickerControllerDelegate, UI
                 self.checkButton.tintColor = .white
                 self.checkButton.backgroundColor = UIColor(red: 0.988, green: 0.596, blue: 0.424, alpha: 1)
                 self.resultView.isHidden = false
+                self.periodField.text = "결석 기간"
+                self.period.text = "2025-06-20 ~ 2025-06-24 (5일)"
+                self.reasonField.text = "결석 사유"
+                self.reason.text = "질병(눈병)으로 인한 결석"
+                self.noteField.text = "비고"
+                self.note.text = ""
                 self.count += 1
             }
         } else if count == 6 {
@@ -230,7 +350,22 @@ class ApplyViewController: UIViewController, UIImagePickerControllerDelegate, UI
             self.calendar.tintColor = UIColor(red: 0.988, green: 0.596, blue: 0.424, alpha: 1)
         } else if count == 7 {
             self.calendar.isHidden = true
+            self.memoView.isHidden = false
+            text1.text = "2. 일정 선택"
+            text2.text = "돌봄 메모 작성 (선택)"
             checkButton.backgroundColor = UIColor(red: 0.875, green: 0.886, blue: 0.898, alpha: 1)
+            
+            // 저장 호출
+            let memo = self.memofield.text ?? ""
+            self.saveScheduleForChild(date: self.selectedDate, memo: memo)
+            count += 1
+        } else if count == 8 {
+            let storyboard = UIStoryboard(name: "Main", bundle: nil)
+            if let payVC = storyboard.instantiateViewController(withIdentifier: "PayViewController") as? PayViewController {
+                payVC.userDocumentId = self.userDocumentId // 유저 정보 전달
+                self.present(payVC, animated: true, completion: nil) // modal 방식
+                // 또는 navigationController?.pushViewController(payVC, animated: true)
+            }
         }
     }
 }

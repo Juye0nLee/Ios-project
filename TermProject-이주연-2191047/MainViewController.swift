@@ -21,6 +21,10 @@ class MainViewController: UIViewController {
         setupUI()
         fetchUserData()
         fetchChildrenData()
+        
+        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(applyButtonTapped))
+        applyButton.addGestureRecognizer(tapGesture)
+        applyButton.isUserInteractionEnabled = true
     }
     
     private func setupUI() {
@@ -49,6 +53,9 @@ class MainViewController: UIViewController {
 
             print("유저 이름: \(name), 소득 유형: \(incomeType)")
             // 여기에 UI 반영 코드 작성 가능
+            DispatchQueue.main.async {
+                self.userNameLabel.text = "\(name)님"
+            }
         }
     }
 
@@ -80,5 +87,14 @@ class MainViewController: UIViewController {
                 }
             }
     }
+    
+    @objc func applyButtonTapped() {
+        let storyboard = UIStoryboard(name: "Main", bundle: nil)
+        if let applyVC = storyboard.instantiateViewController(withIdentifier: "ApplyViewController") as? ApplyViewController {
+            applyVC.userDocumentId = self.userDocumentId
+            self.present(applyVC, animated: true, completion: nil)
+        }
+    }
+
 }
 
