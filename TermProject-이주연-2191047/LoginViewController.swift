@@ -44,48 +44,48 @@ class LoginViewController: UIViewController {
             textField.isSecureTextEntry = true
         }
     }
-//    private func showAlert(message: String) {
-//        let alert = UIAlertController(title: "알림", message: message, preferredStyle: .alert)
-//        alert.addAction(UIAlertAction(title: "확인", style: .default))
-//        self.present(alert, animated: true)
-//    }
-//
-//    private func navigateToMain() {
-//        // 예: 스토리보드 ID 기반 화면 전환
-//        if let mainVC = storyboard?.instantiateViewController(withIdentifier: "MainViewController") {
-//            mainVC.modalPresentationStyle = .fullScreen
-//            self.present(mainVC, animated: true)
-//        }
-//    }
-//    @IBAction func loginButtonTapped(_ sender: UIButton) {
-//        guard let id = idTextField.text, !id.isEmpty,
-//              let password = passwordTextField.text, !password.isEmpty else {
-//            showAlert(message: "아이디와 비밀번호를 모두 입력해주세요.")
-//            return
-//        }
-//        
-//        let docRef = Firestore.firestore().collection("members").document(id)
-//        docRef.getDocument { snapshot, error in
-//            if let error = error {
-//                print("로그인 조회 실패: \(error.localizedDescription)")
-//                self.showAlert(message: "로그인 중 문제가 발생했습니다.")
-//                return
-//            }
-//            
-//            guard let data = snapshot?.data() else {
-//                self.showAlert(message: "해당 이메일의 계정이 없습니다.")
-//                return
-//            }
-//            
-//            let savedPassword = data["password"] as? String ?? ""
-//            if savedPassword == password {
-//                print("로그인 성공! 사용자 이름: \(data["name"] ?? "")")
-//                self.navigateToMain()
-//            } else {
-//                self.showAlert(message: "비밀번호가 일치하지 않습니다.")
-//            }
-//        }
-//    }
+    private func showAlert(message: String) {
+        let alert = UIAlertController(title: "알림", message: message, preferredStyle: .alert)
+        alert.addAction(UIAlertAction(title: "확인", style: .default))
+        self.present(alert, animated: true)
+    }
+
+    private func navigateToMain() {
+        // 예: 스토리보드 ID 기반 화면 전환
+        if let mainVC = storyboard?.instantiateViewController(withIdentifier: "MainViewController") {
+            mainVC.modalPresentationStyle = .fullScreen
+            self.present(mainVC, animated: true)
+        }
+    }
+    @IBAction func loginButtonTapped(_ sender: UIButton) {
+        guard let id = idTextField.text, !id.isEmpty,
+              let password = passwordTextField.text, !password.isEmpty else {
+            showAlert(message: "아이디와 비밀번호를 모두 입력해주세요.")
+            return
+        }
+        
+        let docRef = Firestore.firestore().collection("users").document(id)
+        docRef.getDocument { snapshot, error in
+            if let error = error {
+                print("로그인 조회 실패: \(error.localizedDescription)")
+                self.showAlert(message: "로그인 중 문제가 발생했습니다.")
+                return
+            }
+            
+            guard let data = snapshot?.data() else {
+                self.showAlert(message: "해당 이메일의 계정이 없습니다.")
+                return
+            }
+            
+            let savedPassword = data["password"] as? String ?? ""
+            if savedPassword == password {
+                print("로그인 성공! 사용자 이름: \(data["name"] ?? "")")
+                self.navigateToMain()
+            } else {
+                self.showAlert(message: "비밀번호가 일치하지 않습니다.")
+            }
+        }
+    }
 }
 extension UITextField {
     func setPadding(top: CGFloat, left: CGFloat, bottom: CGFloat, right: CGFloat) {
