@@ -11,6 +11,7 @@ import FirebaseFirestore
 class MainViewController: UIViewController {
     var userDocumentId: String?
     
+    @IBOutlet weak var statusLabel: UILabel!
     @IBOutlet weak var scrollView: UIScrollView!
     @IBOutlet weak var childImage: UIImageView!
     @IBOutlet weak var applyButton: UIView!
@@ -65,28 +66,45 @@ class MainViewController: UIViewController {
             return
         }
 
-        Firestore.firestore()
+        let childrenRef = Firestore.firestore()
             .collection("users")
             .document(userId)
             .collection("children")
-            .getDocuments { snapshot, error in
-                if let error = error {
-                    print("자녀 정보 조회 실패: \(error.localizedDescription)")
-                    return
-                }
 
-                guard let documents = snapshot?.documents else { return }
-                for doc in documents {
-                    let data = doc.data()
-                    let childName = data["name"] as? String ?? ""
-                    let birth = data["birth"] as? String ?? ""
-                    let gender = data["gender"] as? String ?? ""
+        childrenRef.getDocuments { snapshot, error in
+            if let error = error {
+                print("자녀 정보 조회 실패: \(error.localizedDescription)")
+                return
+            }
 
-                    print("자녀: \(childName), 생일: \(birth), 성별: \(gender)")
-                    // 필요시 리스트 UI에 추가 가능
+            guard let documents = snapshot?.documents, !documents.isEmpty else { return }
+
+            var serviceApplied = false
+            let dispatchGroup = DispatchGroup()
+
+            for doc in documents {
+                let childId = doc.documentID
+                dispatchGroup.enter()
+
+                childrenRef.document(childId).collection("schedules").getDocuments { scheduleSnapshot, error in
+                    if let error = error {
+                        print("스케줄 조회 실패: \(error.localizedDescription)")
+                    } else if let schedules = scheduleSnapshot?.documents, !schedules.isEmpty {
+                        serviceApplied = true
+                    }
+
+                    dispatchGroup.leave()
                 }
             }
+
+            dispatchGroup.notify(queue: .main) {
+                if serviceApplied {
+                    self.statusLabel.text = "서비스 신청 완료"
+                }
+            }
+        }
     }
+
     
     @objc func applyButtonTapped() {
         let storyboard = UIStoryboard(name: "Main", bundle: nil)

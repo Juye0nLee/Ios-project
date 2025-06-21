@@ -638,17 +638,17 @@
                                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="oqX-xm-Epb">
                                                         <rect key="frame" x="0.0" y="336" width="291" height="56"/>
                                                         <subviews>
-                                                            <stackView opaque="NO" contentMode="scaleToFill" spacing="5" translatesAutoresizingMaskIntoConstraints="NO" id="QGi-Ii-wpt">
-                                                                <rect key="frame" x="16" y="19" width="164" height="18"/>
+                                                            <stackView opaque="NO" contentMode="scaleToFill" spacing="10" translatesAutoresizingMaskIntoConstraints="NO" id="QGi-Ii-wpt">
+                                                                <rect key="frame" x="16" y="19" width="225" height="18"/>
                                                                 <subviews>
                                                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" text="최근 신청 현황" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="qs2-hW-yaH">
-                                                                        <rect key="frame" x="0.0" y="0.0" width="79.666666666666671" height="18"/>
+                                                                        <rect key="frame" x="0.0" y="0.0" width="69" height="18"/>
                                                                         <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="12"/>
                                                                         <nil key="textColor"/>
                                                                         <nil key="highlightedColor"/>
                                                                     </label>
-                                                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" text="서비스 신청 완료" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="bVD-Ns-967">
-                                                                        <rect key="frame" x="84.666666666666657" y="0.0" width="79.333333333333343" height="18"/>
+                                                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" text="아직 신청 내역이 없습니다" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="bVD-Ns-967">
+                                                                        <rect key="frame" x="79" y="0.0" width="146" height="18"/>
                                                                         <fontDescription key="fontDescription" type="system" weight="medium" pointSize="12"/>
                                                                         <nil key="textColor"/>
                                                                         <nil key="highlightedColor"/>
@@ -665,7 +665,7 @@
                                                             <constraint firstAttribute="width" constant="287" id="LgY-9J-5zz"/>
                                                             <constraint firstAttribute="bottom" secondItem="QGi-Ii-wpt" secondAttribute="bottom" constant="19" id="bu2-9d-hNR"/>
                                                             <constraint firstItem="QGi-Ii-wpt" firstAttribute="top" secondItem="oqX-xm-Epb" secondAttribute="top" constant="19" id="fAm-g0-zp8"/>
-                                                            <constraint firstAttribute="trailing" secondItem="QGi-Ii-wpt" secondAttribute="trailing" constant="111" id="hbQ-K9-H1h"/>
+                                                            <constraint firstAttribute="trailing" secondItem="QGi-Ii-wpt" secondAttribute="trailing" constant="50" id="z5r-hI-G4B"/>
                                                         </constraints>
                                                     </view>
                                                 </subviews>
@@ -706,6 +706,7 @@
                         <outlet property="applyStatusBox" destination="oqX-xm-Epb" id="mAH-5V-aBZ"/>
                         <outlet property="childImage" destination="2da-dT-aKt" id="UP6-Uh-W3S"/>
                         <outlet property="scrollView" destination="7Ep-CC-iU0" id="88q-3w-Ugg"/>
+                        <outlet property="statusLabel" destination="bVD-Ns-967" id="dh4-7I-wfL"/>
                         <outlet property="userNameLabel" destination="PiC-5K-TIR" id="1Ro-cw-7fW"/>
                     </connections>
                 </viewController>
