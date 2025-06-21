@@ -349,12 +349,12 @@ class ApplyViewController: UIViewController, UIImagePickerControllerDelegate, UI
             self.calendar.locale = Locale(identifier: "ko_KR")
             self.calendar.tintColor = UIColor(red: 0.988, green: 0.596, blue: 0.424, alpha: 1)
         } else if count == 7 {
+            self.view.endEditing(true)
             self.calendar.isHidden = true
             self.memoView.isHidden = false
             text1.text = "2. 일정 선택"
             text2.text = "돌봄 메모 작성 (선택)"
             checkButton.backgroundColor = UIColor(red: 0.875, green: 0.886, blue: 0.898, alpha: 1)
-            
             // 저장 호출
             let memo = self.memofield.text ?? ""
             self.saveScheduleForChild(date: self.selectedDate, memo: memo)
@@ -363,8 +363,7 @@ class ApplyViewController: UIViewController, UIImagePickerControllerDelegate, UI
             let storyboard = UIStoryboard(name: "Main", bundle: nil)
             if let payVC = storyboard.instantiateViewController(withIdentifier: "PayViewController") as? PayViewController {
                 payVC.userDocumentId = self.userDocumentId // 유저 정보 전달
-                self.present(payVC, animated: true, completion: nil) // modal 방식
-                // 또는 navigationController?.pushViewController(payVC, animated: true)
+                self.present(payVC, animated: false, completion: nil) // modal 방식
             }
         }
     }

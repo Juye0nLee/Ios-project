@@ -110,7 +110,7 @@ class MainViewController: UIViewController {
         let storyboard = UIStoryboard(name: "Main", bundle: nil)
         if let applyVC = storyboard.instantiateViewController(withIdentifier: "ApplyViewController") as? ApplyViewController {
             applyVC.userDocumentId = self.userDocumentId
-            self.present(applyVC, animated: true, completion: nil)
+            self.present(applyVC, animated: false, completion: nil)
         }
     }
 

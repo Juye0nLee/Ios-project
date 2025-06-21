@@ -85,7 +85,7 @@ class LoginViewController: UIViewController {
                 if let mainVC = storyboard.instantiateViewController(withIdentifier: "MainViewController") as? MainViewController {
                     mainVC.userDocumentId = userDoc.documentID
                     mainVC.modalPresentationStyle = .fullScreen
-                    self.present(mainVC, animated: true)
+                    self.present(mainVC, animated: false)
                 }
                 self.navigateToMain()
             } else {

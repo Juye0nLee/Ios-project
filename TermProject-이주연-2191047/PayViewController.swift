@@ -113,17 +113,53 @@ class PayViewController: UIViewController {
     @IBAction func payButtonTapped(_ sender: UIButton) {
         overlayView.isHidden = false
 
-        // 실제 결제 로직으로 대체 가능
-        DispatchQueue.main.asyncAfter(deadline: .now() + 2.0) {
-            self.overlayView.isHidden = true
-            print("결제 완료 처리")
-            // 결제 완료 후 화면 전환 등 추가 작업
-            let storyboard = UIStoryboard(name: "Main", bundle: nil)
-            if let completeVC = storyboard.instantiateViewController(withIdentifier: "CompleteViewController") as? CompleteViewController {
-                self.present(completeVC, animated: true, completion: nil)
+        // 1. 요청할 URL
+        guard let url = URL(string: "http://192.168.45.245:8080/payments/start") else {
+            print("URL 생성 실패")
+            return
+        }
+
+        // 2. URLRequest 구성
+        var request = URLRequest(url: url)
+        request.httpMethod = "POST"
+        request.setValue("application/json", forHTTPHeaderField: "Content-Type")
+        request.setValue("SECRET_KEY DEV44D98DF96DA593BCE34C8B17C62625836F53C", forHTTPHeaderField: "Authorization")
+
+        // 3. 요청 보내기
+        let task = URLSession.shared.dataTask(with: request) { data, response, error in
+            DispatchQueue.main.async {
+                self.overlayView.isHidden = true
+            }
+
+            if let error = error {
+                print("요청 실패: \(error.localizedDescription)")
+                return
+            }
+
+            guard let data = data else {
+                print("응답 데이터 없음")
+                return
+            }
+
+            // 4. JSON 디코딩
+            do {
+                let decoder = JSONDecoder()
+                let response = try decoder.decode(KakaoPayResponse.self, from: data)
+                
+                // 5. 결제 페이지로 이동 (Safari 열기)
+                if let url = URL(string: response.next_redirect_pc_url) {
+                    DispatchQueue.main.async {
+                        UIApplication.shared.open(url)
+                    }
+                }
+            } catch {
+                print("디코딩 실패: \(error.localizedDescription)")
             }
         }
+
+        task.resume()
     }
+
 
     private func fetchUserAndChildInfo() {
         guard let userId = userDocumentId else {
@@ -202,21 +238,19 @@ class PayViewController: UIViewController {
                         formatterTime.dateFormat = "HH:mm"
 
                         let scheduleText = "\(formatterDate.string(from: startDate)) | \(formatterTime.string(from: startDate)) ~ \(formatterDate.string(from: endDate)) | \(formatterTime.string(from: endDate))"
-
-                        // 요금 계산
+                        
                         let hoursPerDay = 5
                         let hourlyRate = 13900
                         let days = 5
                         let totalHours = hoursPerDay * days
                         let totalAmount = totalHours * hourlyRate
-
+                        
                         // 자녀 나이 계산
                         let birthFormatter = DateFormatter()
                         birthFormatter.dateFormat = "yyyy-MM-dd"
                         let birthDate = birthFormatter.date(from: birthStr) ?? Date()
                         let age = Calendar.current.dateComponents([.year], from: birthDate, to: Date()).year ?? 0
 
-                        // 정부 지원금 계산
                         var subsidy: Int = 0
                         if incomeType.contains("가형") {
                             subsidy = age < 8 ? Int(Double(totalAmount) * 0.85) : Int(Double(totalAmount) * 0.75)
@@ -227,19 +261,18 @@ class PayViewController: UIViewController {
                         } else {
                             subsidy = 0
                         }
-
                         let userPay = totalAmount - subsidy
 
                         DispatchQueue.main.async {
                             self.scheduleLabel.text = scheduleText
-                            self.memoLabel.text = memo
+                            self.memoLabel.text = "우리 아이는 포켓몬을 좋아해요"
 
                             let formatter = NumberFormatter()
                             formatter.numberStyle = .decimal
 
-                            self.charge3.text = "\(formatter.string(from: NSNumber(value: totalAmount)) ?? "0")원"
+                            self.charge1.text = "\(formatter.string(from: NSNumber(value: totalAmount)) ?? "0")원"
                             self.charge2.text = "\(formatter.string(from: NSNumber(value: subsidy)) ?? "0")원"
-                            self.charge1.text = "\(formatter.string(from: NSNumber(value: userPay)) ?? "0")원"
+                            self.charge3.text = "\(formatter.string(from: NSNumber(value: userPay)) ?? "0")원"
                         }
                     }
             }
