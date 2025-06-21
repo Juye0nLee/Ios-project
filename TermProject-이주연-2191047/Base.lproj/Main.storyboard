@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="23504" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="yhT-4U-sUv">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="23504" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="BYZ-38-t0r">
     <device id="retina6_12" orientation="portrait" appearance="light"/>
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="23506"/>
@@ -422,7 +422,7 @@
                                                         <color key="textColor" red="0.70588237047195435" green="0.35294118523597717" blue="0.35294118523597717" alpha="0.84705883264541626" colorSpace="custom" customColorSpace="sRGB"/>
                                                         <nil key="highlightedColor"/>
                                                     </label>
-                                                    <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="아이보리 텍스트 로고" translatesAutoresizingMaskIntoConstraints="NO" id="8ex-5v-4Gf">
+                                                    <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="ivory_text_logo" translatesAutoresizingMaskIntoConstraints="NO" id="8ex-5v-4Gf">
                                                         <rect key="frame" x="0.0" y="22.333333333333343" width="192" height="43"/>
                                                         <constraints>
                                                             <constraint firstAttribute="height" constant="43" id="1V5-AG-uNX"/>
@@ -517,11 +517,11 @@
             <objects>
                 <viewController storyboardIdentifier="MainViewController" id="6e8-hM-7sC" customClass="MainViewController" customModule="TermProject_________2191047" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="RpM-BI-rJy">
-                        <rect key="frame" x="0.0" y="0.0" width="393" height="852"/>
+                        <rect key="frame" x="0.0" y="0.0" width="393" height="842"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="20" translatesAutoresizingMaskIntoConstraints="NO" id="Twf-DF-7aI">
-                                <rect key="frame" x="20" y="59" width="335" height="793"/>
+                                <rect key="frame" x="20" y="0.0" width="335" height="842"/>
                                 <subviews>
                                     <stackView opaque="NO" contentMode="scaleToFill" distribution="equalCentering" alignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="sU1-Vd-aQN">
                                         <rect key="frame" x="0.0" y="0.0" width="335" height="32"/>
@@ -544,16 +544,16 @@
                                         </subviews>
                                     </stackView>
                                     <stackView opaque="NO" contentMode="scaleToFill" ambiguous="YES" axis="vertical" alignment="top" spacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="2Eg-Bx-R3B">
-                                        <rect key="frame" x="0.0" y="52" width="335" height="8"/>
+                                        <rect key="frame" x="0.0" y="52" width="335" height="57"/>
                                         <subviews>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" text="이주연님" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="PiC-5K-TIR">
-                                                <rect key="frame" x="0.0" y="0.0" width="83.333333333333329" height="0.0"/>
+                                                <rect key="frame" x="0.0" y="0.0" width="83.333333333333329" height="28.666666666666668"/>
                                                 <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="24"/>
                                                 <nil key="textColor"/>
                                                 <nil key="highlightedColor"/>
                                             </label>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" text="오늘도 마음 편히 보내세요!" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="5uk-wg-dWq">
-                                                <rect key="frame" x="0.0" y="8" width="210.33333333333334" height="0.0"/>
+                                                <rect key="frame" x="0.0" y="36.666666666666671" width="210.33333333333334" height="20.333333333333329"/>
                                                 <fontDescription key="fontDescription" type="system" pointSize="20"/>
                                                 <nil key="textColor"/>
                                                 <nil key="highlightedColor"/>
@@ -561,7 +561,7 @@
                                         </subviews>
                                     </stackView>
                                     <stackView opaque="NO" contentMode="scaleToFill" ambiguous="YES" distribution="fillEqually" spacing="20" translatesAutoresizingMaskIntoConstraints="NO" id="ifs-et-bAx">
-                                        <rect key="frame" x="0.0" y="80" width="335" height="143"/>
+                                        <rect key="frame" x="0.0" y="129" width="335" height="143"/>
                                         <subviews>
                                             <view contentMode="scaleToFill" ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="w0d-Rh-PQt">
                                                 <rect key="frame" x="0.0" y="0.0" width="157.66666666666666" height="143"/>
@@ -573,7 +573,7 @@
                                         </subviews>
                                     </stackView>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="IbW-kx-7s3">
-                                        <rect key="frame" x="0.0" y="243" width="335" height="90"/>
+                                        <rect key="frame" x="0.0" y="292" width="335" height="90"/>
                                         <subviews>
                                             <stackView opaque="NO" contentMode="scaleToFill" spacing="36" translatesAutoresizingMaskIntoConstraints="NO" id="Nej-Bn-vaP">
                                                 <rect key="frame" x="10.666666666666657" y="20" width="314" height="50"/>
@@ -617,7 +617,7 @@
                                         </constraints>
                                     </view>
                                     <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="7Ep-CC-iU0">
-                                        <rect key="frame" x="0.0" y="353" width="335" height="440"/>
+                                        <rect key="frame" x="0.0" y="402" width="335" height="440"/>
                                         <subviews>
                                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="o4A-oV-U6O">
                                                 <rect key="frame" x="24" y="24" width="291" height="392"/>
@@ -1468,17 +1468,119 @@
             </objects>
             <point key="canvasLocation" x="3137" y="4"/>
         </scene>
+        <!--Complete View Controller-->
+        <scene sceneID="MfU-Cb-VmU">
+            <objects>
+                <viewController storyboardIdentifier="CompleteViewController" id="af8-hx-Wqz" customClass="CompleteViewController" customModule="TermProject_________2191047" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="vZI-Yf-Kvh">
+                        <rect key="frame" x="0.0" y="0.0" width="393" height="852"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" alignment="center" spacing="6" translatesAutoresizingMaskIntoConstraints="NO" id="Tfr-9q-wtp">
+                                <rect key="frame" x="29" y="215" width="335" height="422"/>
+                                <subviews>
+                                    <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" alignment="center" spacing="20" translatesAutoresizingMaskIntoConstraints="NO" id="Zui-I3-vFd">
+                                        <rect key="frame" x="59.000000000000014" y="0.0" width="217.33333333333337" height="129.66666666666666"/>
+                                        <subviews>
+                                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="checkmark.circle" catalog="system" highlightedImage="checkmark.circle" translatesAutoresizingMaskIntoConstraints="NO" id="N48-7K-Fj0">
+                                                <rect key="frame" x="92.666666666666657" y="0.66666666666666607" width="32" height="30.666666666666671"/>
+                                                <color key="tintColor" red="0.98823529409999999" green="0.59607843140000005" blue="0.42352941179999998" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
+                                                <constraints>
+                                                    <constraint firstAttribute="height" constant="32" id="iJ0-QX-m8L"/>
+                                                    <constraint firstAttribute="width" constant="32" id="keA-4A-N0i"/>
+                                                </constraints>
+                                            </imageView>
+                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="5l4-nl-3M7">
+                                                <rect key="frame" x="23.333333333333329" y="52" width="170.66666666666669" height="40.666666666666657"/>
+                                                <string key="text">정상적으로 서비스 신청이
+완료되었습니다!</string>
+                                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                <nil key="textColor"/>
+                                                <nil key="highlightedColor"/>
+                                            </label>
+                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="일정에 맞추어 돌보미를 매칭해드릴게요" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="XoP-Zn-PY4" userLabel="정상적으로 서비스 신청이 완료되었습니다!">
+                                                <rect key="frame" x="0.0" y="112.66666666666669" width="217.33333333333334" height="17"/>
+                                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                                <color key="textColor" red="0.4627450704574585" green="0.4627450704574585" blue="0.4627450704574585" alpha="0.84705883264541626" colorSpace="custom" customColorSpace="sRGB"/>
+                                                <nil key="highlightedColor"/>
+                                            </label>
+                                        </subviews>
+                                    </stackView>
+                                    <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="fillProportionally" alignment="center" spacing="42" translatesAutoresizingMaskIntoConstraints="NO" id="FPQ-xl-iQx">
+                                        <rect key="frame" x="0.0" y="135.66666666666671" width="335" height="286.33333333333326"/>
+                                        <subviews>
+                                            <stackView opaque="NO" contentMode="scaleToFill" alignment="bottom" spacing="64" translatesAutoresizingMaskIntoConstraints="NO" id="fg2-i4-f5x">
+                                                <rect key="frame" x="19.666666666666657" y="0.0" width="296" height="188.33333333333334"/>
+                                                <subviews>
+                                                    <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="아기 보리" translatesAutoresizingMaskIntoConstraints="NO" id="p9a-OH-82b">
+                                                        <rect key="frame" x="0.0" y="101.33333333333331" width="87" height="87"/>
+                                                        <constraints>
+                                                            <constraint firstAttribute="width" constant="87" id="KFg-FR-Xss"/>
+                                                            <constraint firstAttribute="height" constant="87" id="P2A-Dx-vwv"/>
+                                                        </constraints>
+                                                    </imageView>
+                                                    <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="보리" translatesAutoresizingMaskIntoConstraints="NO" id="z2X-Vp-pGd">
+                                                        <rect key="frame" x="151" y="43.333333333333314" width="145" height="145"/>
+                                                        <constraints>
+                                                            <constraint firstAttribute="height" constant="145" id="hyr-JC-Ghi"/>
+                                                            <constraint firstAttribute="width" constant="145" id="t4j-LK-OaN"/>
+                                                        </constraints>
+                                                    </imageView>
+                                                </subviews>
+                                            </stackView>
+                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="W1v-Nw-XOg" userLabel="결제하기">
+                                                <rect key="frame" x="0.0" y="230.33333333333331" width="335" height="56"/>
+                                                <color key="backgroundColor" red="0.98823529409999999" green="0.59607843140000005" blue="0.42352941179999998" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
+                                                <constraints>
+                                                    <constraint firstAttribute="width" constant="335" id="MUZ-9x-75c"/>
+                                                    <constraint firstAttribute="height" constant="56" id="XDL-pc-3JZ"/>
+                                                </constraints>
+                                                <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                <state key="normal" title="Button"/>
+                                                <buttonConfiguration key="configuration" style="plain" title="홈으로 가기">
+                                                    <fontDescription key="titleFontDescription" type="system" weight="semibold" pointSize="16"/>
+                                                </buttonConfiguration>
+                                                <connections>
+                                                    <action selector="checkButtonTapped:" destination="yrC-TT-a2r" eventType="touchUpInside" id="dxh-MV-9wm"/>
+                                                    <action selector="payButtonTapped:" destination="yhT-4U-sUv" eventType="touchUpInside" id="8xW-HD-o29"/>
+                                                    <segue destination="6e8-hM-7sC" kind="show" id="mOY-0k-NLj"/>
+                                                </connections>
+                                            </button>
+                                        </subviews>
+                                    </stackView>
+                                </subviews>
+                            </stackView>
+                        </subviews>
+                        <viewLayoutGuide key="safeArea" id="x6a-Sg-xCy"/>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                        <constraints>
+                            <constraint firstItem="Tfr-9q-wtp" firstAttribute="centerX" secondItem="vZI-Yf-Kvh" secondAttribute="centerX" id="1cX-Ws-wMm"/>
+                            <constraint firstItem="Tfr-9q-wtp" firstAttribute="centerY" secondItem="vZI-Yf-Kvh" secondAttribute="centerY" id="EQr-PT-hqA"/>
+                        </constraints>
+                    </view>
+                    <connections>
+                        <outlet property="homeButton" destination="W1v-Nw-XOg" id="gYQ-bF-Usn"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="qiE-Py-z7z" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="3838.9312977099235" y="3.5211267605633805"/>
+        </scene>
     </scenes>
     <resources>
+        <image name="checkmark.circle" catalog="system" width="128" height="123"/>
         <image name="chevron.backward" catalog="system" width="97" height="128"/>
+        <image name="ivory_text_logo" width="768" height="172"/>
         <image name="person" catalog="system" width="128" height="121"/>
         <image name="play.circle" catalog="system" width="128" height="123"/>
         <image name="quill_paper" width="24" height="24"/>
         <image name="달력" width="24" height="24"/>
         <image name="메인화면 로고" width="218" height="288"/>
         <image name="박스" width="24" height="24"/>
+        <image name="보리" width="145" height="145"/>
         <image name="보리와 보리아기 1" width="792" height="792"/>
         <image name="사진" width="36" height="36"/>
+        <image name="아기 보리" width="87" height="87"/>
         <image name="아이보리 텍스트 로고" width="768" height="172"/>
         <image name="예린" width="1125" height="1360"/>
         <image name="카드" width="24" height="24"/>

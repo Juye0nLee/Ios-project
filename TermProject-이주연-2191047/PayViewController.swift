@@ -118,6 +118,10 @@ class PayViewController: UIViewController {
             self.overlayView.isHidden = true
             print("결제 완료 처리")
             // 결제 완료 후 화면 전환 등 추가 작업
+            let storyboard = UIStoryboard(name: "Main", bundle: nil)
+            if let completeVC = storyboard.instantiateViewController(withIdentifier: "CompleteViewController") as? CompleteViewController {
+                self.present(completeVC, animated: true, completion: nil)
+            }
         }
     }
 
